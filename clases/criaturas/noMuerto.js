@@ -1,40 +1,63 @@
 export class NoMuerto {
+
+    // === Ejército global de NoMuertos ===
+    static ejercito = [];
+
+    // === Propiedad privada de cada NoMuerto ===
     #nombre;
-    #vivo;
 
-    constructor(nombre = "", vivo = true) {
+    // ============================
+    //        CONSTRUCTOR
+    // ============================
+    constructor(nombre = "") {
         this.#nombre = nombre;
-        this.#vivo = vivo;
     }
 
-    // GETTERS
-    get nombre() { 
-        return this.#nombre; 
+    // ============================
+    //        GETTERS
+    // ============================
+    get nombre() {
+        return this.#nombre;
     }
 
-    get vivo() { 
-        return this.#vivo; 
-    }
-
-    // SETTERS
+    // ============================
+    //        SETTERS
+    // ============================
     set nombre(valor) {
-        this.#nombre = valor;
+        if (typeof valor === "string" && valor.trim() !== "") {
+            this.#nombre = valor;
+        } else {
+            console.log("El nombre del NoMuerto no es válido.");
+        }
     }
 
-    set vivo(valor) {
-        this.#vivo = Boolean(valor);
+    // ============================
+    //   MÉTODO ESTÁTICO: INVOCAR
+    // ============================
+    static invocarMuertos(listaDeMuertos) {
+
+        listaDeMuertos.forEach(m => {
+            const zombie = new NoMuerto(m.nombre);
+
+            NoMuerto.ejercito.push(zombie);
+
+            console.log(`❄️ ${m.nombre} ha sido invocado como NoMuerto.`);
+        });
     }
 
-    // El NoMuerto NO ataca
-    atacar() {
-        console.log(`${this.#nombre} no puede atacar.`);
-    }
+    // ============================
+    //   MÉTODO ESTÁTICO: MOSTRAR
+    // ============================
+    static mostrarEjercito() {
+        console.log("=== Ejército de NoMuertos ===");
 
-    recibirDaño() {
-        console.log(`${this.#nombre} no puede recibir daño.`);
-    }
+        if (NoMuerto.ejercito.length === 0) {
+            console.log("El ejército está vacío.");
+            return;
+        }
 
-    mostrarInfo() {
-        console.log(`${this.#nombre} (NoMuerto) - Vivo: ${this.#vivo}`);
+        NoMuerto.ejercito.forEach(z => {
+            console.log(`- ${z.nombre}`);
+        });
     }
 }
